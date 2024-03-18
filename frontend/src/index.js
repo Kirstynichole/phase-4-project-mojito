@@ -8,6 +8,7 @@ import ViewBudgets from './components/ViewBudgets';
 import Spend from './components/Spend';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NewBudget from './components/NewBudget';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "transactions",
         element: <Transactions />
+      },
+      {
+        path: "newbudget",
+        element: <NewBudget />
       }
     ]
   }
