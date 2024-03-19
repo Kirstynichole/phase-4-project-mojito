@@ -24,17 +24,10 @@ db.init_app(app)
 def root():
     return "<h1>Welcome to the simple json server<h1>"
 
-@app.before_request
-def load_data():
-    with open("db.json") as f:
-        g.data = json.load(f)
-
-
-@app.after_request
-def save_data(response):
-    with open('db.json', 'w') as f:
-        json.dump(g.data, f, indent=4)
-    return response
+@app.route('/categories')
+def get_categories():
+    categories = [category.to_dict() for category in Category.query.all()]
+    return make_response( categories, 200 )
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

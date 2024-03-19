@@ -19,7 +19,7 @@ db = SQLAlchemy(metadata=metadata)
 class Category(db.Model, SerializerMixin):
     __tablename__ = 'category_table'
 
-    serialize_rules = []
+    serialize_rules = ['-transactions.categories', '-budget_data.categories', '-transactions.users', '-budget_data.users']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -30,7 +30,7 @@ class Category(db.Model, SerializerMixin):
 class User(db.Model, SerializerMixin):
     __tablename__ = 'user_table'
 
-    serialize_rules = []
+    serialize_rules = ['-transactions.users', '-budget_data.users', '-user_data.users', '-transactions.categories', '-budget_data.categories']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -42,12 +42,12 @@ class User(db.Model, SerializerMixin):
 class Transaction(db.Model, SerializerMixin):
     __tablename__ = 'transaction_table'
 
-    serialize_rules = []
+    serialize_rules = ['-categories.transactions', '-users.transactions']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     amount = db.Column(db.Integer)
-    # date = db.Column(db.String)
+    # date = db.Column(db.DateTime)
     category_id = db.Column(db.Integer, db.ForeignKey('category_table.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
     
@@ -57,11 +57,11 @@ class Transaction(db.Model, SerializerMixin):
 class Budget_Data(db.Model, SerializerMixin):
     __tablename__ = 'budget_data_table'
 
-    serialize_rules = []
+    serialize_rules = ['-users.budget_data', '-categories.budget_data']
 
     id = db.Column(db.Integer, primary_key=True)
     category_budget = db.Column(db.Integer)
-    # date = db.Column(db.String)
+    # date = db.Column(db.DateTime)
     category_id = db.Column(db.Integer, db.ForeignKey('category_table.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
 
@@ -71,10 +71,10 @@ class Budget_Data(db.Model, SerializerMixin):
 class User_Data(db.Model, SerializerMixin):
     __tablename__ = 'user_data_table'
 
-    serialize_rules = ["-user_table.user_data_table"]
+    serialize_rules = ['-users.user_data']
 
     id = db.Column(db.Integer, primary_key=True)
-    # date = db.Column(db.String)
+    # date = db.Column(db.DateTime)
     income = db.Column(db.Integer)
     savings = db.Column(db.Integer)
     budget = db.Column(db.Integer)
