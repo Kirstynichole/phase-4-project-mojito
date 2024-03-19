@@ -28,6 +28,11 @@ function NewBudget() {
                 <br/>
                 <p>{`Calculated Budget: $${budget}`}</p>
             </form>
+            <h1>Choose your spending categories</h1>
+            <button>Home</button>
+            <button>Utilities</button>
+            <button>Groceries</button>
+            <button>Restaurants</button>
         </div>
     )
 }
