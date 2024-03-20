@@ -19,30 +19,30 @@ db = SQLAlchemy(metadata=metadata)
 class Category(db.Model, SerializerMixin):
     __tablename__ = 'category_table'
 
-    serialize_rules = ['-transactions.categories', '-budget_data.categories', '-transactions.users', '-budget_data.users']
+    serialize_rules = ['-transactions.category', '-budget_data.category', '-transactions.users', '-budget_data.users']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
-    transactions = db.relationship('Transaction', back_populates='categories')
-    budget_data = db.relationship('Budget_Data', back_populates='categories')
+    transactions = db.relationship('Transaction', back_populates='category')
+    budget_data = db.relationship('Budget_Data', back_populates='category')
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'user_table'
 
-    serialize_rules = ['-transactions.users', '-budget_data.users', '-user_data.users', '-transactions.categories', '-budget_data.categories']
+    serialize_rules = ['-transactions.users', '-budget_data.user', '-user_data.users', '-transactions.category', '-budget_data.category']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
     transactions = db.relationship('Transaction', back_populates='users')
-    budget_data = db.relationship('Budget_Data', back_populates='users')
+    budget_data = db.relationship('Budget_Data', back_populates='user')
     user_data = db.relationship('User_Data', back_populates='users')
 
 class Transaction(db.Model, SerializerMixin):
     __tablename__ = 'transaction_table'
 
-    serialize_rules = ['-categories.transactions', '-users.transactions']
+    serialize_rules = ['-category.transactions', '-users.transactions']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -51,13 +51,13 @@ class Transaction(db.Model, SerializerMixin):
     category_id = db.Column(db.Integer, db.ForeignKey('category_table.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
     
-    categories = db.relationship('Category', back_populates='transactions')
+    category = db.relationship('Category', back_populates='transactions')
     users = db.relationship('User', back_populates='transactions')
 
 class Budget_Data(db.Model, SerializerMixin):
     __tablename__ = 'budget_data_table'
 
-    serialize_rules = ['-users.budget_data', '-categories.budget_data']
+    serialize_rules = ['-user.budget_data', '-category.budget_data']
 
     id = db.Column(db.Integer, primary_key=True)
     category_budget = db.Column(db.Integer)
@@ -65,8 +65,8 @@ class Budget_Data(db.Model, SerializerMixin):
     category_id = db.Column(db.Integer, db.ForeignKey('category_table.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
 
-    users = db.relationship('User', back_populates='budget_data')
-    categories = db.relationship('Category', back_populates='budget_data')
+    user = db.relationship('User', back_populates='budget_data')
+    category = db.relationship('Category', back_populates='budget_data')
 
 class User_Data(db.Model, SerializerMixin):
     __tablename__ = 'user_data_table'
