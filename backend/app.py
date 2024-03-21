@@ -34,9 +34,16 @@ def get_budget_data():
     budget_data = [budget_data.to_dict() for budget_data in Budget_Data.query.filter_by(user_id=1).all()]
     return make_response( budget_data, 200 )
 
+@app.get('/budgetdata/<int:id>')
+def get_budget_id(id):
+    budget_data = db.session.get(Budget_Data, id)
+    if not budget_data:
+        return {"error": f"budget data with id {id} not found"}, 404
+    return budget_data.to_dict()
+
 @app.get('/userdata')
 def get_user_data():
-    user_data = User_Data.query.filter_by(user_id=2).first().to_dict()
+    user_data = User_Data.query.filter_by(user_id=1).first().to_dict()
     return make_response( user_data, 200 )
 
 @app.post('/budgetdata')
@@ -75,6 +82,15 @@ def post_user_data():
     except Exception as e:
         print(e)
         return {"error": f"could not post user data: {e}"}, 405
+    
+@app.delete("/budgetdata/<int:id>")
+def delete_budget_data(id):
+    budget_data = db.session.get(Budget_Data, id)
+    if not budget_data:
+        return {"error": f"budget data with id {id} not found"}, 404
+    db.session.delete(budget_data)
+    db.session.commit()
+    return {}, 202
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

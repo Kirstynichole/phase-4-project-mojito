@@ -71,9 +71,18 @@ function NewBudget() {
         });
         for (let key in userCategories) {
             if (userCategories.hasOwnProperty(key)) {
+                let id = 0
+                console.log(`id before submission is ${id}`)
+                categories.map(category => {
+                    if (category.name === key) {
+                        id = category.id;
+                    }
+                    return id
+                });
+                console.log(`id after submission is ${id}`)
                 const categorySpend = {
                     category_budget: userCategories[key],
-                    category_id: 1,
+                    category_id: id,
                     user_id: 1
                 }
 
