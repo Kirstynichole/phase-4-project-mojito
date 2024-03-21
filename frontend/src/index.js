@@ -9,6 +9,7 @@ import Spend from './components/Spend';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NewBudget from './components/NewBudget';
+import About from './components/About';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "newbudget",
         element: <NewBudget />
+      },
+      {
+        path: "about",
+        element: <About />
       }
     ]
   }

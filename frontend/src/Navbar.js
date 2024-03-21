@@ -19,6 +19,9 @@ function Navbar() {
                 <li>
                     <NavLink to="newbudget">Set Budget</NavLink>
                 </li>
+                <li>
+                    <NavLink to="about">About</NavLink>
+                </li>
             </ul>
         </nav>
     )
