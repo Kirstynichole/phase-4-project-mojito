@@ -92,5 +92,20 @@ def delete_budget_data(id):
     db.session.commit()
     return {}, 202
 
+@app.patch("/budgetdata/<int:id>")
+def patch_budget_data(id):
+    budget_data = db.session.get(Budget_Data, id)
+    if not budget_data:
+        return {"error": f"budget data for id {id} not found"}, 404
+    try:
+        data = request.json
+        for key in data:
+            setattr(budget_data, key, data[key])
+        db.session.add(budget_data)
+        db.session.commit()
+        return budget_data.to_dict(), 200
+    except Exception as e:
+        return {"error": f'{e}'}
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
