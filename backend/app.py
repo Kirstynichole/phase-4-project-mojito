@@ -46,6 +46,11 @@ def get_user_data():
     user_data = User_Data.query.filter_by(user_id=1).first().to_dict()
     return make_response( user_data, 200 )
 
+@app.get('/transactiondata')
+def get_transaction_data():
+    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1).order_by(Transaction.id.desc()).all()]
+    return make_response( transaction_data, 200 )
+
 @app.post('/budgetdata')
 def post_budget_data():
     data = request.json
@@ -83,6 +88,25 @@ def post_user_data():
         print(e)
         return {"error": f"could not post user data: {e}"}, 405
     
+@app.post('/transactiondata')
+def post_transaction_data():
+    data = request.json
+    try:
+        new_transaction_data = Transaction(
+            name= data.get("name"),
+            amount= data.get("amount"),
+            category_id=data.get("category_id"),
+            user_id= data.get("user_id"),
+        )
+
+        db.session.add(new_transaction_data)
+        db.session.commit()
+        
+        return new_transaction_data.to_dict(), 201
+    except Exception as e:
+        print(e)
+        return {"error": f"could not post transaction data: {e}"}, 405
+
 @app.delete("/budgetdata/<int:id>")
 def delete_budget_data(id):
     budget_data = db.session.get(Budget_Data, id)
