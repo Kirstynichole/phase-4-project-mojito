@@ -122,45 +122,53 @@ function NewBudget() {
         </h1>
         <div className="border-dotted border-2 border-mojitoBlue bg-transparent text-mojitoBlue rounded-xl m-5 mt-10 p-5 py-10 px-8">
             <form onSubmit={handleSubmit}>
-            <label>Month</label>
-            <select
+            <div className="inline">
+                <label>Month</label>
+                <select
                 value={month}
                 onChange={(event) => setMonth(event.target.value)}
                 className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none"
-            >
+                >
                 {months.map((month) => (
-                <option key={month}>{month}</option>
+                    <option key={month}>{month}</option>
                 ))}
-            </select>
-            <label>Year</label>
-            <select
+                </select>
+            </div>
+            <div className="inline">
+                <label>Year</label>
+                <select
                 value={year}
                 onChange={(event) => setYear(event.target.value)}
                 className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none"
-            >
+                >
                 {years.map((year) => (
-                <option key={year}>{year}</option>
+                    <option key={year}>{year}</option>
                 ))}
-            </select>
-            <label>Income $</label>
-            <input
+                </select>
+            </div>
+            <div >
+                <label>Income $</label>
+                <input
                 type="text"
                 placeholder="1,000,000"
                 value={income}
                 onChange={(event) => setIncome(event.target.value)}
                 className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none"
-            ></input>
-            <label>Savings $</label>
-            <input
+                ></input>
+            </div>
+            <div >
+                <label>Savings $</label>
+                <input
                 type="text"
                 placeholder="100,000"
                 value={savings}
                 onChange={(event) => setSavings(event.target.value)}
                 className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none"
-            ></input>
+                ></input>
+            </div>
             <br />
             <p className="font-bold">{`Calculated Budget: $${budget}`}</p>
-            <br/>
+            <br />
             <h1>Choose your spending categories:</h1>
             {categories.map((category) => (
                 <button
@@ -180,6 +188,7 @@ function NewBudget() {
                     <input
                         type="number"
                         value={userCategories[category] || ""}
+                        className="p-1 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none"
                         onChange={(e) =>
                         handleSpendingChange(category, e.target.value)
                         }
@@ -189,9 +198,14 @@ function NewBudget() {
                 : ""}
 
             {Object.keys(userCategories).length > 0 && (
-                <p>Budget left to allocate: {budget - sum}</p>
+                <p className="p-2 m-2">Budget left to allocate: {budget - sum}</p>
             )}
-            <button type="submit" className="inline bg-mojitoBlue text-mojitoGrey p-2 rounded-xl border-2 border-mojitoBlue hover:bg-mojitoGrey hover:text-mojitoBlue mt-2 mr-5">Submit Budget</button>
+            <button
+                type="submit"
+                className="inline bg-mojitoBlue text-mojitoGrey p-2 rounded-xl border-2 border-mojitoBlue hover:bg-mojitoGrey hover:text-mojitoBlue mt-2 mr-5"
+            >
+                Submit Budget
+            </button>
             </form>
         </div>
         </div>

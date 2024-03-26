@@ -5,10 +5,26 @@ import math
 from faker import Faker
 
 from app import app
-from models import db, Category, User, Transaction, Budget_Data, User_Data
+from models import db, Category, User, Transaction, Budget_Data, User_Data, Date
 from flask_bcrypt import Bcrypt
 
 fake = Faker()
+
+def seed_date_table():
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    for month in months:
+        # print(month)
+        existing_date = Date.query.filter_by(month=month).first()
+        # print(existing_date)
+        if existing_date is None:
+            new_date = Date(month=month)
+            # print(new_date)
+            db.session.add(new_date)
+            # print("yay")
+    db.session.commit()
 
 with app.app_context():
 
@@ -20,6 +36,7 @@ with app.app_context():
     Transaction.query.delete()
     Budget_Data.query.delete()
     User_Data.query.delete()
+    Date.query.delete()
 
     # populate table with users
     users = []
@@ -60,4 +77,13 @@ with app.app_context():
     #     users_data.append(user_data)
     # db.session.add_all(users_data)
 
+    seed_date_table()
+    # months, date_instances = [
+    #     "January", "February", "March", "April", "May", "June",
+    #     "July", "August", "September", "October", "November", "December"
+    # ], []
+    # for month in months:
+    #     date_instance = Date(month=month)
+    #     date_instances.append(date_instance)
+    # db.session.add_all(date_instances)
     db.session.commit()

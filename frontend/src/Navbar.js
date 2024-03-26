@@ -7,7 +7,7 @@ function Navbar() {
     const [nav, setNav] = useState(false);
 
     return (
-        <nav className="flex text-center items-center justify-between w-full h-20 font-header fixed px-4 mt-3">
+        <nav className="flex text-center items-center justify-between w-full h-20 font-header px-4 mt-3">
         <div className="text-4xl font-bold mt-2 ml-5">
             <NavLink
             onClick={nav ? () => setNav(!nav) : null}

@@ -2,7 +2,7 @@ from flask import Flask, make_response, jsonify, request, session, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
-from models import db, Category, User, Transaction, Budget_Data, User_Data
+from models import db, Category, User, Transaction, Budget_Data, User_Data, Date
 from dotenv import dotenv_values
 from flask_bcrypt import Bcrypt
 import json
@@ -51,6 +51,11 @@ def get_transaction_data():
     transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1).order_by(Transaction.id.desc()).all()]
     return make_response( transaction_data, 200 )
 
+@app.get('/dates')
+def get_dates():
+    dates = [date.to_dict() for date in Date.query.all()]
+    return make_response(dates, 200)
+
 @app.post('/budgetdata')
 def post_budget_data():
     data = request.json
@@ -93,10 +98,11 @@ def post_transaction_data():
     data = request.json
     try:
         new_transaction_data = Transaction(
-            name= data.get("name"),
-            amount= data.get("amount"),
-            category_id=data.get("category_id"),
-            user_id= data.get("user_id"),
+            name = data.get("name"),
+            amount = data.get("amount"),
+            category_id = data.get("category_id"),
+            user_id = data.get("user_id"),
+            date_id = data.get("date_id")
         )
 
         db.session.add(new_transaction_data)
