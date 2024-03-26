@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 function Transactions() {
     const [newName, setNewName] = useState("");
@@ -9,6 +10,7 @@ function Transactions() {
     const [reloadTransactions, setReloadTransactions] = useState(false);
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
+    const [filteredMonth, setFilteredMonth] = useState("");
 
     useEffect(() => {
         fetch("http://localhost:5555/categories")
@@ -70,6 +72,21 @@ function Transactions() {
         .then((response) => response.json())
         .then((data) => setTransactions(data));
     }, [reloadTransactions]);
+
+    useEffect(() => {
+        fetch(`http://localhost:5555/transactiondata/${filteredMonth}`)
+        .then((response) => response.json())
+        .then((data) => setTransactions(data));
+    }, [filteredMonth, reloadTransactions]);
+
+    const handleFilteredMonth = (event) => {
+        const month = event.target.value 
+        dates.map((date) => {
+            if (date.month === month) {
+                setFilteredMonth(date.id);
+            }
+        })
+    }
 
     return (
         <div className=" md:flex items-center justify-center h-full">
@@ -133,6 +150,12 @@ function Transactions() {
             <div className="rounded-lg">
 
             <h1 className="font-header m-5 text-center text-bold">View your Transactions</h1>
+            <select className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none" onChange={handleFilteredMonth}>
+                <option>Select a Month</option>
+                {dates.map((date) => (
+                <option key={date.id} value={date.month}>{date.month}</option>
+                ))}
+            </select>
             <table className="rounded-lg items-center border-2 border-mojitoBlue p-5">
             <tbody className="text-center">
                 <tr>
@@ -142,7 +165,7 @@ function Transactions() {
                 <th className="items-center py-3 pr-4 text-mojitoGrey bg-mojitoBlue">Month</th>
                 </tr>
                 {transactions.map((transaction) => (
-                <tr className="hover:bg-grey-200" key={transaction.id}>
+                <tr className="hover:bg-mojitoPeriwinkle" key={transaction.id}>
                     <td className="py-3 px-6">{transaction ? transaction.name : ""}</td>
                     <td className="py-3 px-6">${transaction ? transaction.amount : ""}</td>
                     <td className="py-3 px-6">

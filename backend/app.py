@@ -51,6 +51,11 @@ def get_transaction_data():
     transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1).order_by(Transaction.id.desc()).all()]
     return make_response( transaction_data, 200 )
 
+@app.get('/transactiondata/<string:filteredMonth>')
+def get_filtered_transaction_data(filteredMonth):
+    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1, date_id=filteredMonth).order_by(Transaction.id.desc()).all()]
+    return make_response( transaction_data, 200 )
+
 @app.get('/dates')
 def get_dates():
     dates = [date.to_dict() for date in Date.query.all()]

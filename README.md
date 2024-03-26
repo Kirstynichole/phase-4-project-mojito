@@ -7,3 +7,5 @@ npm install react-icons --save
 
 To load charts, install plotly:
 npm install react-plotly.js plotly.js
+
+To launch the backend, navigate into the backend, enter pipenv shell and then enter python app.py
