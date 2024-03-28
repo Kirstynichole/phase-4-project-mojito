@@ -11,13 +11,13 @@ function ViewBudgets() {
     const [reloadBudgetData, setReloadBudgetData] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:5555/budgetdata")
+        fetch("/budgetdata")
         .then((response) => response.json())
         .then((data) => setBudgetData(data));
     }, [edit, reloadBudgetData]);
 
     useEffect(() => {
-        fetch("http://localhost:5555/userdata")
+        fetch("/userdata")
         .then((response) => response.json())
         .then((data) => setUserData(data));
     }, []);
@@ -27,7 +27,7 @@ function ViewBudgets() {
         "Are you sure you want to delete this item?"
         );
         if (confirmed) {
-        fetch(`http://localhost:5555/budgetdata/${id}`, {
+        fetch(`/budgetdata/${id}`, {
             method: "DELETE",
         }).then((response) => {
             if (response.ok) {
@@ -109,7 +109,7 @@ function ViewBudgets() {
                 <h2>Total left to Budget: ${userData && userData.budget}</h2>
                 </div>
             </div>
-            <div className="border-2 border-mojitoBlue m-2 p-2">
+            <div className="border-2 rounded-xl border-mojitoBlue m-2 p-2">
             {edit ? (
                 // Allow for edits of budget data
                 <form onSubmit={handleEditData}>

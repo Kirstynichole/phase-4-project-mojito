@@ -7,13 +7,13 @@ function PieChart() {
     const [userData, setUserData] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:5555/userdata")
+        fetch("/userdata")
         .then((response) => response.json())
         .then((data) => setUserData(data));
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:5555/budgetdata")
+        fetch("/budgetdata")
         .then((response) => response.json())
         .then((data) => setBudgetData(data));
     }, []);
@@ -44,7 +44,7 @@ function PieChart() {
             data={data}
             layout={{
             width: 475,
-            height: 475,
+            height: 550,
             title: "Budget",
             color: "#e5e7eb",
             paper_bgcolor:'rgba(0,0,0,0)',

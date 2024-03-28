@@ -38,12 +38,12 @@ with app.app_context():
     User_Data.query.delete()
     Date.query.delete()
 
-    # populate table with users
-    users = []
-    for n in range(1):
-        user = User(name=fake.name())
-        users.append(user)
-    db.session.add_all(users)
+    # # populate table with users
+    # users = []
+    # for n in range(1):
+    #     user = User(name=fake.name())
+    #     users.append(user)
+    # db.session.add_all(users)
 
     # populate table with categories
     category_instances = []
@@ -53,29 +53,29 @@ with app.app_context():
         category_instances.append(c)
     db.session.add_all(category_instances)
 
-    # # populate table with transactions
-    # transactions = []
-    # for n in range(25):
-    #     transaction = Transaction(name=fake.company(), amount=random.randint(1, 1000), category_id=random.randint(1, len(categories)), user_id=random.randint(1, 5))
-    #     transactions.append(transaction)
-    # db.session.add_all(transactions)
+    # populate table with transactions
+    transactions = []
+    for n in range(1):
+        transaction = Transaction(name=fake.company(), amount=random.randint(1, 1000), category_id=random.randint(1, len(categories)), user_id=1)
+        transactions.append(transaction)
+    db.session.add_all(transactions)
 
-    # # populate table with budget_data
-    # budgets = []
-    # for n in range(50):
-    #     budget = Budget_Data(category_budget=random.randint(1000,10000), category_id=random.randint(1, len(categories)), user_id=random.randint(1, 5))
-    #     budgets.append(budget)
-    # db.session.add_all(budgets)
+    # populate table with budget_data
+    budgets = []
+    for n in range(1):
+        budget = Budget_Data(category_budget=random.randint(1000,10000), category_id=random.randint(1, len(categories)), user_id=1)
+        budgets.append(budget)
+    db.session.add_all(budgets)
 
-    # #populate table with user_data
-    # users_data = []
-    # for n in range(5):
-    #     income = random.randint(10000, 100000)
-    #     savings = math.floor(income * 0.1)
-    #     budget = income - savings
-    #     user_data = User_Data(income=income, savings=savings, budget=budget, user_id=random.randint(1, 5))
-    #     users_data.append(user_data)
-    # db.session.add_all(users_data)
+    #populate table with user_data
+    users_data = []
+    for n in range(1):
+        income = random.randint(10000, 100000)
+        savings = math.floor(income * 0.1)
+        budget = income - savings
+        user_data = User_Data(income=income, savings=savings, budget=budget, user_id=1)
+        users_data.append(user_data)
+    db.session.add_all(users_data)
 
     seed_date_table()
     # months, date_instances = [
@@ -86,4 +86,10 @@ with app.app_context():
     #     date_instance = Date(month=month)
     #     date_instances.append(date_instance)
     # db.session.add_all(date_instances)
+
+    db.session.add(User(name="a", password_hash=bcrypt.generate_password_hash("a")))
+    db.session.add(User(name="b", password_hash=bcrypt.generate_password_hash("b")))
+    
     db.session.commit()
+
+print("seeding complete")

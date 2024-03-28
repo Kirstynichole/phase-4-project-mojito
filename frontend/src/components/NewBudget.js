@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 function NewBudget() {
     const navigate = useNavigate();
@@ -31,6 +32,8 @@ function NewBudget() {
     const budget = income - savings;
     const [userCategories, setUserCategories] = useState({});
     const [sum, setSum] = useState(0);
+    const {user} = useOutletContext();
+
 
     const handleSetUserCategories = (event, category) => {
         event.preventDefault();
@@ -57,7 +60,7 @@ function NewBudget() {
         setSum(sum);
     };
     useEffect(() => {
-        fetch("http://localhost:5555/categories")
+        fetch("/categories")
         .then((response) => response.json())
         .then((data) => setCategories(data));
     }, []);
@@ -68,9 +71,9 @@ function NewBudget() {
         income: income,
         savings: savings,
         budget: budget,
-        user_id: 1,
+        user_id: user.id,
         };
-        fetch("http://localhost:5555/userdata", {
+        fetch("/userdata", {
         method: "POST",
         headers: {
             "Content-Type": "Application/JSON",
@@ -96,10 +99,10 @@ function NewBudget() {
             const categorySpend = {
             category_budget: userCategories[key],
             category_id: id,
-            user_id: 1,
+            user_id: user.id,
             };
 
-            fetch("http://localhost:5555/budgetdata", {
+            fetch("/budgetdata", {
             method: "POST",
             headers: {
                 "Content-Type": "Application/JSON",

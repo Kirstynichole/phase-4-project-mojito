@@ -6,10 +6,10 @@ from models import db, Category, User, Transaction, Budget_Data, User_Data, Date
 from dotenv import dotenv_values
 from flask_bcrypt import Bcrypt
 import json
-# config = dotenv_values(".env")
+config = dotenv_values(".env")
 
 app = Flask(__name__)
-# app.secret_key = config['FLASK_SECRET_KEY']
+app.secret_key = config['FLASK_SECRET_KEY']
 CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -19,10 +19,35 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 
-
 @app.route("/")
 def root():
     return "<h1>Welcome to the simple json server<h1>"
+
+@app.get('/check_session')
+def check_session():
+    user = db.session.get(User, session.get('user_id'))
+    print(f'check session {session.get("user_id")}')
+    if user:
+        return user.to_dict(rules=['-password_hash']), 200
+    else:
+        return {"message": "No user logged in"}, 401
+
+@app.delete('/logout')
+def logout():
+    session.pop('user_id')
+    return { "message": "Logged out"}, 200
+
+@app.post('/login')
+def login():
+    print('login')
+    data = request.json
+    user = User.query.filter(User.name == data.get('name')).first()
+    if user and bcrypt.check_password_hash(user.password_hash, data.get('password')):
+        session["user_id"] = user.id
+        print("success")
+        return user.to_dict(), 200
+    else:
+        return { "error": "Invalid username or password" }, 401
 
 @app.get('/categories')
 def get_categories():
@@ -31,7 +56,7 @@ def get_categories():
 
 @app.get('/budgetdata')
 def get_budget_data():
-    budget_data = [budget_data.to_dict() for budget_data in Budget_Data.query.filter_by(user_id=1).all()]
+    budget_data = [budget_data.to_dict() for budget_data in Budget_Data.query.filter_by(user_id=session['user_id']).all()]
     return make_response( budget_data, 200 )
 
 @app.get('/budgetdata/<int:id>')
@@ -43,17 +68,17 @@ def get_budget_id(id):
 
 @app.get('/userdata')
 def get_user_data():
-    user_data = User_Data.query.filter_by(user_id=1).first().to_dict()
+    user_data = User_Data.query.filter_by(user_id=session.get('user_id')).first().to_dict()
     return make_response( user_data, 200 )
 
 @app.get('/transactiondata')
 def get_transaction_data():
-    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1).order_by(Transaction.id.desc()).all()]
+    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=session.get('user_id')).order_by(Transaction.id.desc()).all()]
     return make_response( transaction_data, 200 )
 
 @app.get('/transactiondata/<string:filteredMonth>')
 def get_filtered_transaction_data(filteredMonth):
-    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=1, date_id=filteredMonth).order_by(Transaction.id.desc()).all()]
+    transaction_data = [transaction_data.to_dict() for transaction_data in Transaction.query.filter_by(user_id=session.get('user_id'), date_id=filteredMonth).order_by(Transaction.id.desc()).all()]
     return make_response( transaction_data, 200 )
 
 @app.get('/dates')
@@ -70,7 +95,6 @@ def post_budget_data():
             category_id= data.get("category_id"),
             user_id= data.get("user_id"),
         )
-
         db.session.add(new_budget_data)
         db.session.commit()
         
