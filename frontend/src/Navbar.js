@@ -3,7 +3,7 @@ import { BiDrink } from "react-icons/bi";
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-function Navbar() {
+function Navbar({user, logout}) {
     const [nav, setNav] = useState(false);
 
     return (
@@ -47,13 +47,23 @@ function Navbar() {
                 </li>
             </div>
             </ul>
+            {!user ? (
             <div className="ml-auto">
             <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
-                <NavLink to="/" style={{ cursor: "pointer" }}>
+                <NavLink to="login" style={{ cursor: "pointer" }}>
                 Login
                 </NavLink>
             </div>
             </div>
+            ) : (
+            <div className="ml-auto">
+            <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
+                <NavLink to="/" onClick={logout} style={{ cursor: "pointer" }}>
+                Logout
+                </NavLink>
+            </div>
+            </div>
+            )}
         </div>
         <div
             className="cursor-pointer pr-2 z-10 text-mojitoBlue md:hidden"
@@ -98,15 +108,25 @@ function Navbar() {
                     <NavLink onClick={() => setNav(!nav)} to="about">
                     About
                     </NavLink>
-                </li>
+                </li>                    
                 </div>
-                <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
-                <li className="text-lg font-header cursor-pointer text-mojitoGrey">
-                    <NavLink onClick={() => setNav(!nav)} to="/">
-                    Login
-                    </NavLink>
-                </li>
-                </div>
+                {!user ? (
+                    <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
+                    <li className="text-lg font-header cursor-pointer text-mojitoGrey">
+                        <NavLink onClick={() => setNav(!nav)} to="login">
+                        Login
+                        </NavLink>
+                    </li>
+                    </div>
+                ) : (
+                    <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
+                    <li className="text-lg font-header cursor-pointer text-mojitoGrey">
+                        <NavLink onClick={logout} to="/">
+                        Logout
+                        </NavLink>
+                    </li>
+                    </div>
+                )}
             </ul>
             <div
                 onClick={() => setNav(!nav)}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 function Transactions() {
     const [newName, setNewName] = useState("");
@@ -11,15 +12,17 @@ function Transactions() {
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState("");
     const [filteredMonth, setFilteredMonth] = useState("");
+    const {user} = useOutletContext();
+    console.log(user.id)
 
     useEffect(() => {
-        fetch("http://localhost:5555/categories")
+        fetch("/categories")
         .then((response) => response.json())
         .then((data) => setCategories(data));
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:5555/dates")
+        fetch("/dates")
         .then((response) => response.json())
         .then((data) => setDates(data));
     }, []);
@@ -47,10 +50,10 @@ function Transactions() {
         name: newName,
         amount: newPrice,
         category_id: id,
-        user_id: 1,
+        user_id: user.id,
         date_id: dateId
         };
-        fetch("http://localhost:5555/transactiondata", {
+        fetch("/transactiondata", {
         method: "POST",
         headers: {
             "Content-Type": "Application/JSON",
@@ -68,13 +71,13 @@ function Transactions() {
     };
 
     useEffect(() => {
-        fetch("http://localhost:5555/transactiondata")
+        fetch("/transactiondata")
         .then((response) => response.json())
         .then((data) => setTransactions(data));
     }, [reloadTransactions]);
 
     useEffect(() => {
-        fetch(`http://localhost:5555/transactiondata/${filteredMonth}`)
+        fetch(`/transactiondata/${filteredMonth}`)
         .then((response) => response.json())
         .then((data) => setTransactions(data));
     }, [filteredMonth, reloadTransactions]);

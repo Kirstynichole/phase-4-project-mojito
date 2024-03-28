@@ -9,6 +9,8 @@ import Spend from "./components/Spend";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NewBudget from "./components/NewBudget";
 import About from "./components/About";
+import Login from "./components/Login";
+import HomePage from "./components/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <Error />,
     children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
       {
         path: "spend",
         element: <Spend />,
@@ -36,6 +42,10 @@ const router = createBrowserRouter([
         path: "about",
         element: <About />,
       },
+      {
+        path: "login",
+        element: <Login />,
+      }
     ],
   },
 ]);
