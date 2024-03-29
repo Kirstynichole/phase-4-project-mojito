@@ -3,7 +3,7 @@ import { BiDrink } from "react-icons/bi";
 import { useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-function Navbar({user, logout}) {
+function Navbar({ user, logout }) {
     const [nav, setNav] = useState(false);
 
     return (
@@ -21,26 +21,32 @@ function Navbar({user, logout}) {
         <div className="flex-grow"></div>
         <div className="hidden md:flex flex-grow justify-center items-center">
             <ul className="flex items-center justify-center border-double border-2 bg-mojitoGrey border-mojitoBlue p-1 m-3 mt-7 rounded-md">
-            <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
-                <li className="m-2" style={{ cursor: "pointer" }}>
-                <NavLink to="spend">Spend </NavLink>
-                </li>
-            </div>
-            <div className="hidden md:flex transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
-                <li className="m-2" style={{ cursor: "pointer" }}>
-                <NavLink to="viewbudgets">View Budgets</NavLink>
-                </li>
-            </div>
-            <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
-                <li className="m-2" style={{ cursor: "pointer" }}>
-                <NavLink to="transactions">Transactions</NavLink>
-                </li>
-            </div>
-            <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
-                <li className="m-2" style={{ cursor: "pointer" }}>
-                <NavLink to="newbudget">Set Budget</NavLink>
-                </li>
-            </div>
+            {user ? (
+                <>
+                <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
+                    <li className="m-2" style={{ cursor: "pointer" }}>
+                    <NavLink to="spend">Spend </NavLink>
+                    </li>
+                </div>
+                <div className="hidden md:flex transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
+                    <li className="m-2" style={{ cursor: "pointer" }}>
+                    <NavLink to="viewbudgets">View Budgets</NavLink>
+                    </li>
+                </div>
+                <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
+                    <li className="m-2" style={{ cursor: "pointer" }}>
+                    <NavLink to="transactions">Transactions</NavLink>
+                    </li>
+                </div>
+                <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
+                    <li className="m-2" style={{ cursor: "pointer" }}>
+                    <NavLink to="newbudget">Set Budget</NavLink>
+                    </li>
+                </div>
+                </>
+            ) : (
+                ""
+            )}
             <div className="transition duration-200 ease-in-out hover:bg-mojitoBlue hover:text-mojitoGrey p-2 rounded-md">
                 <li className="m-2" style={{ cursor: "pointer" }}>
                 <NavLink to="about">About</NavLink>
@@ -49,20 +55,23 @@ function Navbar({user, logout}) {
             </ul>
             {!user ? (
             <div className="ml-auto">
-            <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
+                <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
                 <NavLink to="login" style={{ cursor: "pointer" }}>
-                Login
+                    Login
                 </NavLink>
-            </div>
+                </div>
             </div>
             ) : (
-            <div className="ml-auto">
-            <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
+                <>
+                <div className="ml-auto">
+                <div><h2 className="text-mojitoBlue flex pr-3">Welcome, {user.name}</h2></div>
+                <div className="font-bold bg-mojitoBlue text-mojitoGrey p-2 rounded-md hover:rounded-2xl mt-2 mr-5">
                 <NavLink to="/" onClick={logout} style={{ cursor: "pointer" }}>
-                Logout
+                    Logout
                 </NavLink>
+                </div>
             </div>
-            </div>
+            </>
             )}
         </div>
         <div
@@ -108,24 +117,24 @@ function Navbar({user, logout}) {
                     <NavLink onClick={() => setNav(!nav)} to="about">
                     About
                     </NavLink>
-                </li>                    
+                </li>
                 </div>
                 {!user ? (
-                    <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
+                <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
                     <li className="text-lg font-header cursor-pointer text-mojitoGrey">
-                        <NavLink onClick={() => setNav(!nav)} to="login">
+                    <NavLink onClick={() => setNav(!nav)} to="login">
                         Login
-                        </NavLink>
+                    </NavLink>
                     </li>
-                    </div>
+                </div>
                 ) : (
-                    <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
+                <div className="transition ease-in-out hover:bg-mojitoBlue p-2 w-full text-center rounded-md">
                     <li className="text-lg font-header cursor-pointer text-mojitoGrey">
-                        <NavLink onClick={logout} to="/">
+                    <NavLink onClick={logout} to="/">
                         Logout
-                        </NavLink>
+                    </NavLink>
                     </li>
-                    </div>
+                </div>
                 )}
             </ul>
             <div

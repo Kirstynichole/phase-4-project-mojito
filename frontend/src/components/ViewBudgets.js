@@ -101,9 +101,9 @@ function ViewBudgets() {
             Your Budget
         </h1>
         <div className="border-double border-2 border-mojitoGrey bg-mojitoBlue text-mojitoGrey rounded-xl m-5 my-10 p-5 py-10 px-8 flex flex-col lg:flex-row justify-between">
-            <div className="lg:w-1/2 lg:ml-10 lg:pr-4">
+            <div className="mt-5 lg:w-1/2 lg:ml-10 lg:pr-4">
             <div className="flex items-center">
-                <div className="border-2 border-mojitoGrey border-double rounded-xl p-2 m-2">
+                <div className="border-2 text-2xl border-mojitoGrey border-double rounded-xl p-2 m-2">
                 <h2>Total Income: ${userData && userData.income}</h2>
                 <h2>Total Savings: ${userData && userData.savings}</h2>
                 <h2>Total left to Budget: ${userData && userData.budget}</h2>

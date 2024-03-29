@@ -56,7 +56,7 @@ with app.app_context():
     # populate table with transactions
     transactions = []
     for n in range(1):
-        transaction = Transaction(name=fake.company(), amount=random.randint(1, 1000), category_id=random.randint(1, len(categories)), user_id=1)
+        transaction = Transaction(name=fake.company(), amount=100, category_id=random.randint(1, len(categories)), user_id=1)
         transactions.append(transaction)
     db.session.add_all(transactions)
 
@@ -70,7 +70,8 @@ with app.app_context():
     #populate table with user_data
     users_data = []
     for n in range(1):
-        income = random.randint(10000, 100000)
+        income = 10000
+        # income = random.randint(10000, 100000)
         savings = math.floor(income * 0.1)
         budget = income - savings
         user_data = User_Data(income=income, savings=savings, budget=budget, user_id=1)
