@@ -90,6 +90,16 @@ function Transactions() {
             }
         })
     }
+    const handleDeleteTransaction = (id) => {
+        fetch(`/transactiondata/${id}`, {
+            method: "DELETE",
+        }).then((response) => {
+            if (response.ok) {
+            const filteredData = transactions.filter((data) => data.id !== id);
+            setTransactions(filteredData);
+            }
+        });
+    };
 
     return (
         <div className=" md:flex items-center justify-center h-full">
@@ -151,7 +161,6 @@ function Transactions() {
             </form>
 
             <div className="rounded-lg">
-
             <h1 className="font-header m-5 text-center text-bold">View your Transactions</h1>
             <select className="p-2 m-2 bg-white rounded-md text-mojitoBlue focus:outline-none" onChange={handleFilteredMonth}>
                 <option>Select a Month</option>
@@ -159,13 +168,15 @@ function Transactions() {
                 <option key={date.id} value={date.month}>{date.month}</option>
                 ))}
             </select>
-            <table className="rounded-lg items-center border-2 border-mojitoBlue p-5">
+            
+            <table className="min-w-10 rounded-lg items-center border-2 border-mojitoBlue p-5">
             <tbody className="text-center">
-                <tr>
-                <th className="items-center py-3 text-mojitoGrey bg-mojitoBlue" >Name</th>
-                <th className="items-center py-3 text-mojitoGrey bg-mojitoBlue">Price</th>
-                <th className="items-center py-3 text-mojitoGrey bg-mojitoBlue">Category</th>
-                <th className="items-center py-3 pr-4 text-mojitoGrey bg-mojitoBlue">Month</th>
+                <tr >
+                <th className="items-center py-3 px-6 text-mojitoGrey bg-mojitoBlue" >Name</th>
+                <th className="items-center py-3 px-6 text-mojitoGrey bg-mojitoBlue">Price</th>
+                <th className="items-center py-3 px-6 text-mojitoGrey bg-mojitoBlue">Category</th>
+                <th className="items-center py-3 px-6 text-mojitoGrey bg-mojitoBlue">Month</th>
+                <th className="items-center py-3 px-3 text-mojitoGrey bg-mojitoBlue">Delete</th>
                 </tr>
                 {transactions.map((transaction) => (
                 <tr className="hover:bg-mojitoPeriwinkle" key={transaction.id}>
@@ -181,11 +192,15 @@ function Transactions() {
                         ? transaction.date.month
                         : ""}
                     </td>
+                    <td>
+                    <button onClick={() => handleDeleteTransaction(transaction.id)} className="font-bold">X</button>
+                    </td>
                 </tr>
                 ))}
             </tbody>
             </table>
             </div>
+
         </div>
         </div>
         </div>

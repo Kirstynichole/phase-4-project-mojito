@@ -2,21 +2,8 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { useState } from "react";
 
-const LoginForm = ({submitText}) => {
-    const { attemptLogin } = useOutletContext();
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
+const LoginForm = ({submitText, handleSubmit, handleChangeUsername, name, handleChangePassword, password}) => {
 
-    console.log(attemptLogin);
-
-    const handleChangeUsername = (e) => setName(e.target.value);
-    const handleChangePassword = (e) => setPassword(e.target.value);
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        attemptLogin({ name: name, password: password });
-        
-    }
 
     return (
         <div >

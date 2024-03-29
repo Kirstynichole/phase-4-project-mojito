@@ -48,6 +48,22 @@ def login():
         return user.to_dict(), 200
     else:
         return { "error": "Invalid username or password" }, 401
+    
+@app.post('/user')
+def post_user():
+    data = request.json
+    try:
+        new_user = User(
+            name= data.get("name"),
+            password_hash= bcrypt.generate_password_hash(data.get("password_hash"))
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return new_user.to_dict(), 201
+    except Exception as e:
+        print(e)
+        return {"error": f"could not post user: {e}"}, 405
 
 @app.get('/categories')
 def get_categories():
@@ -141,6 +157,15 @@ def post_transaction_data():
     except Exception as e:
         print(e)
         return {"error": f"could not post transaction data: {e}"}, 405
+    
+@app.delete("/transactiondata/<int:id>")
+def delete_transaction_data(id):
+    transaction_data = db.session.get(Transaction, id)
+    if not transaction_data:
+        return {"error": f"transaction data with id {id} not found"}, 404
+    db.session.delete(transaction_data)
+    db.session.commit()
+    return {}, 202
 
 @app.delete("/budgetdata/<int:id>")
 def delete_budget_data(id):
